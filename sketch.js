@@ -62,14 +62,20 @@ function readStock(data){
 
 
 //function to update food stock and last fed time
-function feedDog(){
+function feedDog() {
   dog.addImage(happyDog);
 
-  foodObj.updateFoodStock(foodObj.getFoodStock()-1);
-  database.ref('/').update({
-    Food:foodObj.getFoodStock(),
-    FeedTime:hour()
-  })
+  var foodCount = foodObj.getFoodStock()
+  if (foodCount > 0) {
+    foodObj.updateFoodStock(foodCount - 1);
+
+    database.ref('/').update({
+      Food: foodObj.getFoodStock(),
+      FeedTime: hour(),
+      gameState: "Hungry"
+    })
+  }
+
 }
 
 //function to add food in stock
